@@ -139,7 +139,7 @@ Puedes informarte más sobre esta API en la documentación:
 https://docs.aws.amazon.com/cli/latest/reference/rekognition/start-content-moderation.html
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/rekognition.html#Rekognition.Client.start_content_moderation
 
-* [lambda_process_Rekognition](https://github.com/elizabethfuentes12/AWS_ScanVideoS3Rekognition/blob/main/ScanVideoS3Rekognition/lambda_process_Rekognition/lambda_function.py) : Lambda que procesa los resultados de la revision de Amazon Rekognition invocando a **getContentModeration**, 
+* [lambda_process_Rekognition](https://github.com/elizabethfuentes12/AWS_ScanVideoS3Rekognition/blob/main/ScanVideoS3Rekognition/lambda_process_Rekognition/lambda_function.py) : Lambda que procesa los resultados de la revisión de Amazon Rekognition invocando a **getContentModeration**, 
 
 ```bash
 getContentModeration = rekognition.get_content_moderation(
@@ -163,7 +163,8 @@ table.put_item(
                     })
 ```
 
-y envia el correo con SNS. 
+y enviá el correo con SNS. 
+
 ```bash
 message = client.publish(TargetArn= SNS_ARN, Message=mailer,
                                     Subject='Amazon Rekognition Video Detection')
@@ -180,7 +181,7 @@ pip install -r requirements.txt
 
 ### 6. Desplegando la aplicación
 
-Previo al despliegue de la aplicación en AWS Cloud debemos asegurarnos que este sin errores para que no salten errores durante el despliegue, eso lo hacemos con el siguiente comando que genera un template de cloudformation con nuestra definición de recuersos en python.
+Previo al despliegue de la aplicación en AWS Cloud debemos asegurarnos que este sin errores para que no salten errores durante el despliegue, eso lo hacemos con el siguiente comando que genera un template de cloudformation con nuestra definición de recursos en python.
 
 ```bash
 cdk synth
@@ -188,7 +189,7 @@ cdk synth
 
 Si hay algún error en tu código este comando te indicara cual es con su ubicación.  
 
-En el caso de estar cargando una nueva version de la apliación puedes revisar que es lo nuevo con el siguiente comando: 
+En el caso de estar cargando una nueva versión de la aplicación puedes revisar que es lo nuevo con el siguiente comando: 
 
 ```
 cdk diff
@@ -203,7 +204,7 @@ cdk deploy
 ### 7. Tips
 
 
-El despliegue lo utiliza utlizando las credenciales por defecto de AWS, si desea usar un profile específico agrege --profile <nombre> al comando deploy:
+El despliegue lo utiliza utilizando las credenciales por defecto de AWS, si desea usar un profile específico agregue --profile <nombre> al comando deploy:
 
 ```
 cdk deploy --profile mi-profile-custom
