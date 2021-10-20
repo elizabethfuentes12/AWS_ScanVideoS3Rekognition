@@ -19,10 +19,9 @@ def lambda_handler(event, context):
         bucket1 = record['s3']['bucket']['name']
         key = record['s3']['object']['key']
         filename = key.split('/')[-1]
-        userIdentity=record["userIdentity"]["principalId"].split(':')[-1]
+        #userIdentity=record["userIdentity"]["principalId"].split(':')[-1]
 
         print('Empieza la lectura de {}'.format(filename)) 
-        print('Archivo cargado por {}'.format(userIdentity))
 
         #Rekognition Content Moderation APIs
         #https://docs.aws.amazon.com/cli/latest/reference/rekognition/start-content-moderation.html
@@ -33,12 +32,14 @@ def lambda_handler(event, context):
                 'Bucket': bucket1, 
                 'Name': filename, }
                 },
-            ClientRequestToken=userIdentity,
+            #ClientRequestToken=userIdentity,
             NotificationChannel={
             'SNSTopicArn': SNS_REKOGNITION,
             'RoleArn': SNS_ROLE_ARN_REKOGNITION
                                 },
-            JobTag=userIdentity)
+            #JobTag=userIdentity
+            )
+
 
         moderationJobId = startModerationLabelDetection['JobId']
         print("Job Id: {0}".format(moderationJobId))
