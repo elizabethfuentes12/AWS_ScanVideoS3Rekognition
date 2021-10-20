@@ -30,7 +30,7 @@ Para este playground le hice algunas modificaciones.
 
 !["Diagrama_2"](imagen/diagrama_2.png)
 
-1. Al agregar el video en el Bucket **data-bucket** este activa un [Event Notification](https://docs.aws.amazon.com/AmazonS3/latest/userguide/NotificationHowTo.html) que gatilla la Lambda_invokes_Rekognition. 
+1. Al agregar el video en el Bucket **data-bucket** este activa un [Event Notification](https://docs.aws.amazon.com/AmazonS3/latest/userguide/NotificationHowTo.html) que gatilla la Lambda_invokes_Rekognition. **Solo procesa videos en mp4, debes asegurar que sea mp4** 
 2. Lambda_invokes_Rekognition invoca Amazon Rekogintion para realizar la revisión de moderación de contenido en el video, con la API *getContentModeration*.
 3. Una vez lista la revisión del contenido Amazon Rekogintion notifica a traves de SNS a la lambda Lambda_porcess_Rekognition que esta listo el proceso.
  ***Esto lo modifique debido a que la lamnbda de la arquitectura original no finaliza hasta que Amazon Rekognition informe que el proceso es exitoso, si el video es muy largo la lambda quedará a la espera por mucho tiempo lo cual no es costo efectivo.***  
@@ -73,7 +73,7 @@ Conoce más acá: [CDK](https://aws.amazon.com/es/cdk/?nc1=h_ls)
 
 ## Despliegue 🚀 👩🏻‍🚀
 
-Esta herramienta esta desplegada en *us-east-1*, si quieres cambiar la región debes hacerlo en [scan_video_s3_rekognition.py](https://github.com/elizabethfuentes12/AWS_ScanVideoS3Rekognition/tree/main/ScanVideoS3Rekognition/scan_video_s3_rekognition/scan_video_s3_rekognition.py) 
+Esta herramienta esta desplegada en *us-east-1*, si quieres cambiar la región debes hacerlo en [scan_video_s3_rekognition.py](https://github.com/elizabethfuentes12/AWS_ScanVideoS3Rekognition/blob/main/ScanVideoS3Rekognition/scan_video_s3_rekognition/scan_video_s3_rekognition_stack.py) 
 
 ```python
 REGION_NAME = 'tu_region'
@@ -104,9 +104,119 @@ source .venv/bin/activate
 ```
 
 Este ambiente virtual (venv) nos permite aislar las versiones del python que vamos a utilizar como también de librerías asociadas. Con esto podemos tener varios proyectos con distintas configuraciones.
-___
-## 4. Explicación del codigo
+
+### 4. Explicación del código
+
 En el GitHub esta el código listo para desplegar, a continuación una breve explicación:
+
+**Lambdas:**
++ [lambda_invokes_rekognition](https://github.com/elizabethfuentes12/AWS_ScanVideoS3Rekognition/blob/main/ScanVideoS3Rekognition/lambda_invokes_rekognition/lambda_function.py) : Lambda que invoca Amazon Rekogintion para realizar la revisión de moderación de contenido en el video, con la API *getContentModeration* y subscribe al SNS Topic para que se notifique una vez termine la revisión.
+
+```bash
+startModerationLabelDetection = rekognition.start_content_moderation(
+            Video={'S3Object': {
+                'Bucket': bucket1, 
+                'Name': filename, }
+                },
+            ClientRequestToken=userIdentity,
+            NotificationChannel={
+            'SNSTopicArn': SNS_REKOGNITION,
+            'RoleArn': SNS_ROLE_ARN_REKOGNITION
+                                },
+            JobTag=userIdentity)
+```
+
+Puedes informarte más sobre esta API en la documentación: 
+https://docs.aws.amazon.com/cli/latest/reference/rekognition/start-content-moderation.html
+https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/rekognition.html#Rekognition.Client.start_content_moderation
+
+* [lambda_process_Rekognition](https://github.com/elizabethfuentes12/AWS_ScanVideoS3Rekognition/blob/main/ScanVideoS3Rekognition/lambda_process_Rekognition/lambda_function.py) : Lambda que procesa los resultados de la revision de Amazon Rekognition invocando a **getContentModeration**, 
+
+```bash
+getContentModeration = rekognition.get_content_moderation(
+            JobId=moderationJobId,
+            SortBy='TIMESTAMP')
+```
+
+escribe en DynamoDB
+
+```bash 
+table.put_item(
+                    Item={
+                        "Id": str(uuid.uuid4()),
+                        'Timestamp': timestamp,
+                        "Jobtag" : request["JobTag"],
+                        'Confidence': str(round(conf_level, 1)),
+                        'Name': name,
+                        'ParentName': parent,
+                        'Video': filename,
+                        'Date': str(datetime.datetime.now())
+                    })
+```
+
+y envia el correo con SNS. 
+```bash
+message = client.publish(TargetArn= SNS_ARN, Message=mailer,
+                                    Subject='Amazon Rekognition Video Detection')
+```
+
+### 5. Instalamos los requerimientos para el ambiente de python 
+
+Para que el ambiente pueda desplegarse, debemos agregar todas las librerías CDK necesarias en el archivo  [requirements.txt](https://github.com/elizabethfuentes12/AWS_ScanVideoS3Rekognition/blob/main/ScanVideoS3Rekognition/requirements.txt)
+
+
+```zsh
+pip install -r requirements.txt
+```
+
+### 6. Desplegando la aplicación
+
+Previo al despliegue de la aplicación en AWS Cloud debemos asegurarnos que este sin errores para que no salten errores durante el despliegue, eso lo hacemos con el siguiente comando que genera un template de cloudformation con nuestra definición de recuersos en python.
+
+```bash
+cdk synth
+```
+
+Si hay algún error en tu código este comando te indicara cual es con su ubicación.  
+
+En el caso de estar cargando una nueva version de la apliación puedes revisar que es lo nuevo con el siguiente comando: 
+
+```
+cdk diff
+```
+
+Procedemos a desplegar la aplicación: 
+
+```
+cdk deploy
+```
+
+### 7. Tips
+
+
+El despliegue lo utiliza utlizando las credenciales por defecto de AWS, si desea usar un profile específico agrege --profile <nombre> al comando deploy:
+
+```
+cdk deploy --profile mi-profile-custom
+```
+
+o simplemente exporte en una variable de entorno
+
+```
+export AWS_PROFILE=mi-profile-custom
+cdk deploy
+```
+### 8. Eliminar el stack de la aplicación
+
+Para eliminar el stack lo puedes hacer via comando:
+
+```
+cdk destroy
+```
+
+ó via consola cloudformation, seleccione el stack (mismo nombre del proyecto cdk) y lo borra.
+
+## ¡¡Happy developing 😁!!
 
 ----
 
