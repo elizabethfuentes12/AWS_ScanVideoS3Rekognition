@@ -1,0 +1,38 @@
+{
+    "Records": [
+        {
+            "eventVersion": "2.1",
+            "eventSource": "aws:s3",
+            "awsRegion": "us-east-1",
+            "eventTime": "2021-10-20T00:37:04.577Z",
+            "eventName": "ObjectCreated:Put",
+            "userIdentity": {
+                "principalId": "AWS:AROA4JJ5LINICHSWWH6RG:elizabeth"
+            },
+            "requestParameters": {
+                "sourceIPAddress": "201.189.145.153"
+            },
+            "responseElements": {
+                "x-amz-request-id": "CA39GSXJ2NS680GC",
+                "x-amz-id-2": "VQrRISCKpI/DesMXayUGVNgSUiXwFaz+7sGDZz9qW+VlymrP049POU6tqyeoJW94b++oEBZjQ583Ln9d6pDC/ltXZPJVjwSc8mpZLnEd5fo="
+            },
+            "s3": {
+                "s3SchemaVersion": "1.0",
+                "configurationId": "NGZlZjI4ODEtODIzMS00MzI0LTg4ZGMtODE0N2VmNmUxMzlj",
+                "bucket": {
+                    "name": "scan-video-s3-rekognition-databucketa7e4f76c-1thibsp28iexe",
+                    "ownerIdentity": {
+                        "principalId": "A2WBUM2GOVT6XK"
+                    },
+                    "arn": "arn:aws:s3:::scan-video-s3-rekognition-databucketa7e4f76c-1thibsp28iexe"
+                },
+                "object": {
+                    "key": "trailerDH.mp4",
+                    "size": 15319841,
+                    "eTag": "25b14ceb671a0aedd8929fe5a0377a1e",
+                    "sequencer": "00616F64AF2E342F21"
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,22 @@
+{
+    "Records": [
+        {
+            "EventSource": "aws:sns",
+            "EventVersion": "1.0",
+            "EventSubscriptionArn": "arn:aws:sns:us-east-1:844626608976:scan-video-s3-rekognition-mytopicrekognition0B5C5E2D-3I0YOWPVKUUA:4210855c-6197-4991-afa1-0d61c765f988",
+            "Sns": {
+                "Type": "Notification",
+                "MessageId": "a8cc972f-4347-55e9-9952-cec500012600",
+                "TopicArn": "arn:aws:sns:us-east-1:844626608976:scan-video-s3-rekognition-mytopicrekognition0B5C5E2D-3I0YOWPVKUUA",
+                "Subject": null,
+                "Message": "{\"JobId\":\"9c5d1b4ba1a5bd4cdb9cfe76d05b90ce3052d37d9a42834b4d833508da84ff8d\",\"Status\":\"SUCCEEDED\",\"API\":\"StartContentModeration\",\"JobTag\":\"elizabeth\",\"Timestamp\":1634746629953,\"Video\":{\"S3ObjectName\":\"trailerDH.mp4\",\"S3Bucket\":\"scan-video-s3-rekognition-databucketa7e4f76c-1thibsp28iexe\"}}",
+                "Timestamp": "2021-10-20T16:17:10.058Z",
+                "SignatureVersion": "1",
+                "Signature": "uUjIfNQre6kXIbI0w032jkP3/UmcVkbo2XW2yYejtAl5Je7mFr4leQtP9e1vIUNx5I6f59FTOLuP7mUYsWSAq+ZCAddcE830a+b9a539s30CG9Hc470w8sp/IYa+ZOMJgl6AOY/lHme/lKcz7HbI4aq4ucrg9nqsAHWScYhVzerMCFEpAOcg9sGd2PAkQQtZUTFMrAVfCPXOpxJVudSTeYurVo3Xl0ea2TNrTzu+kiHSnm1edgrdrumRkltI5Y0K5uGEn4NjSHjm0JKR8rl5stnKOqrUP+R1po2v6PDbXSzdFXYSurZNTVs4FSztMp2RlMhp6EWMJStiWUpDaJk3rw==",
+                "SigningCertUrl": "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-7ff5318490ec183fbaddaa2a969abfda.pem",
+                "UnsubscribeUrl": "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:844626608976:scan-video-s3-rekognition-mytopicrekognition0B5C5E2D-3I0YOWPVKUUA:4210855c-6197-4991-afa1-0d61c765f988",
+                "MessageAttributes": {}
+            }
+        }
+    ]
+}
