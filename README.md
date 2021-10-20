@@ -242,3 +242,12 @@ https://github.com/aws-samples/amazon-rekognition-serverless-large-scale-image-a
 * La arquitectura original
 
 https://aws.amazon.com/es/blogs/machine-learning/scan-amazon-s3-buckets-for-content-moderation-using-s3-batch-and-amazon-rekognition/
+
+___
+
+
+##¡Gracias!
+
+Te dejo mis redes para que me sigas: 
+[Dev.to](https://dev.to/elizabethfuentes12)
+[Linkedin](https://www.linkedin.com/in/lizfue/)
