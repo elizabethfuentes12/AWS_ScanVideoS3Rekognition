@@ -1,10 +1,10 @@
-# Scan Amazon S3 buckets for content moderation using S3 Batch and Amazon Rekognition.. CDK deploy
+# Escanea videos de Amazon S3 para moderación de contenido utilizando Amazon Scan Amazon Rekognition.. CDK deploy
 
 !["Portada"](imagen/portada.png)
 
 ## Introducción
 
-Revisando arquitecturas me encontré con [esta](https://aws.amazon.com/es/blogs/machine-learning/scan-amazon-s3-buckets-for-content-moderation-using-s3-batch-and-amazon-rekognition/) súper genial😱, que crea una aplicación capaz de escanear videos alojados en Buckets de S3 y con operaciones Batch de S3 y Amazon Rekognition permite identificar el tipo de contenido que este contiene. 
+Revisando arquitecturas me encontré con [esta arquitectura](https://aws.amazon.com/es/blogs/machine-learning/scan-amazon-s3-buckets-for-content-moderation-using-s3-batch-and-amazon-rekognition/) súper genial😱, que crea una aplicación capaz de escanear videos alojados en Buckets de S3 y con operaciones Batch de S3 y Amazon Rekognition permite identificar el tipo de contenido que este contiene. 
 
 Tratar con contenido a gran escala es a menudo desafiante, costoso y una operación pesada. El volumen de contenido generado por usuarios y de terceros ha aumentado sustancialmente en industrias como las redes sociales, el comercio electrónico, la publicidad en línea y el intercambio de medios. Es posible que los clientes deseen revisar este contenido para asegurarse de que cumple con las regulaciones y el gobierno corporativo. Pero necesitan una solución para manejar la escala y la automatización.
  
