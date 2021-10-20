@@ -17,7 +17,7 @@ class ScanVideoS3RekognitionStack(core.Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         REGION_NAME = 'us-east-1'
-        email="correo@correo.com"
+        email="tucorreo@correo.com"
 
         #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         #++++++++++Creamos el data bucket +++++++++++++++++++++++++++++++

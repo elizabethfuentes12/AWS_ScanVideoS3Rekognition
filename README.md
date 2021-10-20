@@ -80,6 +80,13 @@ Esta herramienta esta desplegada en *us-east-1*, si quieres cambiar la región d
 ```python
 REGION_NAME = 'tu_region'
 ```
+ 
+Antes de iniciar debes agregar una dirección de correo valida en [scan_video_s3_rekognition.py](https://github.com/elizabethfuentes12/AWS_ScanVideoS3Rekognition/blob/main/ScanVideoS3Rekognition/scan_video_s3_rekognition/scan_video_s3_rekognition_stack.py)  : 
+
+```python
+email="tucorreo@correo.com"
+```
+
 **Para crear la aplicación debes seguir los siguientes pasos:**
 
 ### 1. Instalar CDK

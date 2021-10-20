@@ -20,7 +20,6 @@ def procesa_sns (record):
     request["jobId"] = message['JobId']
     request["Timestamp"] = message['Timestamp']
     request["jobStatus"] = message['Status']
-    request["JobTag"] = message['JobTag']
     request["jobAPI"] = message['API']
     request["bucketName"] = message['Video']['S3Bucket']
     request["objectName"] = message['Video']['S3ObjectName']
@@ -101,8 +100,8 @@ def lambda_handler(event, context):
             parent = i['ModerationLabel']["ParentName"]
             timestamp = i['Timestamp']
             if timestamp not in timestamps:
-                if conf_level > 95:
-                    string = f'Amazon Rekognition detected "{parent}" at {timestamp}ms "{name}" on video "{s3Key} with a confidence of {round(conf_level, 1)}%";\n'
+                if conf_level > 80:
+                    string = f'Amazon Rekognition detected "{parent}" at {timestamp}ms "{name}" on video "{filename} with a confidence of {round(conf_level, 1)}%";\n'
                     mailer += string
                     timestamps.append(timestamp)
 
@@ -110,17 +109,22 @@ def lambda_handler(event, context):
                     Item={
                         "Id": str(uuid.uuid4()),
                         'Timestamp': timestamp,
-                        "Jobtag" : request["JobTag"],
                         'Confidence': str(round(conf_level, 1)),
                         'Name': name,
                         'ParentName': parent,
                         'Video': filename,
                         'Date': str(datetime.datetime.now())
                     })
+        print("Guardado en dynamodb")
+        mailer += "\n"
+        mailer += strOverall
+    
 
         if mailer != '':
             message = client.publish(TargetArn= SNS_ARN, Message=mailer,
-                                    Subject='Amazon Rekognition Video Detection')
+                                    Subject='Amazon Rekognition Video Detection '+filename)
+            print("Correo enviado")
+            
 
         results = [{
             'taskId': moderationJobId,
