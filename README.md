@@ -26,7 +26,7 @@ La arquitectura que plantea **Virgil Ennes** en su [publicación]((https://aws.a
 6. Amazon SNS envía una notificación por correo electronico. 
 
 ---
-## Arquitectura Adaptada 🤔 ⚙️ 🧰
+## Mi Arquitectura  🤔 ⚙️ 🧰
 
 Para este playground le hice algunas modificaciones.
 
@@ -173,7 +173,7 @@ Procedemos a desplegar la aplicación:
 cdk deploy
 ```
 
-### 7. Tips
+### 7. Tips Para el despliegue
 
 
 El despliegue lo utiliza utilizando las credenciales por defecto de AWS, si desea usar un profile específico agregue --profile <nombre> al comando deploy:
@@ -188,7 +188,46 @@ o simplemente exporte en una variable de entorno
 export AWS_PROFILE=mi-profile-custom
 cdk deploy
 ```
-### 8. Eliminar el stack de la aplicación
+
+### 8. La aplicación
+
+Cuando realices el despliegue te llegara un correo solicitando confirmación para la suscripción del SNS, el correo es como este: 
+
+![confirmacion](imagen/confirmacion.jpeg)
+
+Y cuando aceptes debes ver el siguiente mensaje: 
+
+![aceptado](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/g1y7zh7soel5uow4s7ol.jpeg)
+
+Esto es importante porque, ya que de lo contrario no recibirás el e-mail.
+
+Para iniciar la aplicación debes identificar el bucket S3 en el Stack de cloudformation, el nombre del bucket debe ser algo como: 
+
+```
+s3://scan-video-s3-rekognition-databucketxxxxxxxxxx
+```
+
+Accede al bucket y carga el video, recuerda que debe ser en formato .mp4
+
+![bucket](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0a65fo8ocxo54ksz2o5u.jpeg)
+
+Cuando cargues el archivo de video las lambdas se empezaran a ejecutar, esto puede tardar unos minutos mientras lo puedes monitorear en Amazon CloudWatch. 
+
+Una vez finalizada la revisión podrás ser capaz de ver las etiquetas del video en Dynamodb:
+
+![Dynamodb](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mcw70x22a4roccujbtbg.jpeg)
+
+Y cada Item debe tener la siguiente estructura: 
+
+![Item](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/njp5abntpil009podoof.jpeg)
+
+Con esta data en DynamoDB puedes hacer dashboard en [Amazon Quicksight](https://aws.amazon.com/es/quicksight/), hacer ETL con [AWS Glue](https://aws.amazon.com/es/quicksight/)... en realidad todo lo que te ocurra. 🚀🚀🚀 
+
+
+### 9. Eliminar el stack de la aplicación
+
+Esta aplicación no elimina el bucket si contiene videos, por lo que primero debes vaciar el bucket y luego proceder a destruir el stak. 
+
 
 Para eliminar el stack lo puedes hacer via comando:
 

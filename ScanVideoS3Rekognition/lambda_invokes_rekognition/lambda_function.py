@@ -19,7 +19,6 @@ def lambda_handler(event, context):
         bucket1 = record['s3']['bucket']['name']
         key = record['s3']['object']['key']
         filename = key.split('/')[-1]
-        #userIdentity=record["userIdentity"]["principalId"].split(':')[-1]
 
         print('Empieza la lectura de {}'.format(filename)) 
 
@@ -29,17 +28,13 @@ def lambda_handler(event, context):
 
         startModerationLabelDetection = rekognition.start_content_moderation(
             Video={'S3Object': {
-                'Bucket': bucket1, 
-                'Name': filename, }
+                     'Bucket': bucket1, 
+                       'Name': filename, }
                 },
-            #ClientRequestToken=userIdentity,
-            NotificationChannel={
+            NotificationChannel= {
             'SNSTopicArn': SNS_REKOGNITION,
-            'RoleArn': SNS_ROLE_ARN_REKOGNITION
-                                },
-            #JobTag=userIdentity
-            )
-
+            'RoleArn'    : SNS_ROLE_ARN_REKOGNITION
+                                })
 
         moderationJobId = startModerationLabelDetection['JobId']
         print("Job Id: {0}".format(moderationJobId))
